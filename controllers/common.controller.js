@@ -5,7 +5,7 @@ const multer = require('multer');
 const mkdirp = require('mkdirp');
 const uniqid = require('uniqid');
 const fs = require('fs');
-const sharp = require("sharp");
+const Jimp = require("jimp");
 
 //Image Storage
 const storageImage = multer.diskStorage({
@@ -43,22 +43,13 @@ var uploadDocument = multer({
 
 //Resize Image
 const resizeImages = async (files, path) => {
-    console.log(files);
     if (!files) return next();
-    images = [];
     await Promise.all(
         files.map(async file => {
             const newFilename = file;
-            await sharp(path + file)
-                .resize({
-                    fit: sharp.fit.contain,
-                    width: 300
-                })
-                .toFormat("jpeg")
-                .jpeg({ quality: 90 })
-                .toFile(`uploads/thumbs/${newFilename}`);
-
-            images.push(newFilename);
+            const image = await Jimp.read(path + file);
+            await image.resize(300, 300);
+            await image.writeAsync(`uploads/thumbs/${newFilename}`);
         })
     );
     return true;

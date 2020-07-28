@@ -4,7 +4,7 @@ module.exports = {
     create: (data, callBack) => {
         var queryData = '"'.replace(/"/g, "'") + JSON.stringify(data).replace(/[\/\(\)\']/g, "\\$&") + '"'.replace(/"/g, "'");
         sequelize.query('CALL Brand_Insert(' + queryData + ')').then(response => {
-            var response = response[0].message;
+            var response = JSON.parse(response[0].message);
             return callBack(null, response);
         }).catch(error => {
             callBack({"name": error.name, "message": error.original.sqlMessage });
@@ -14,7 +14,7 @@ module.exports = {
     update: (data, callBack) => {
         var queryData = '"'.replace(/"/g, "'") + JSON.stringify(data).replace(/[\/\(\)\']/g, "\\$&") + '"'.replace(/"/g, "'");
         sequelize.query('CALL Brand_Update(' + queryData + ')').then(response => {
-            var response = response[0].message;
+            var response = JSON.parse(response[0].message);
             return callBack(null, response);
         }).catch(error => {
             callBack({"name": error.name, "message": error.original.sqlMessage });
@@ -24,7 +24,7 @@ module.exports = {
     deleteA: (data, callBack) => {
         var queryData = '"'.replace(/"/g, "'") + JSON.stringify(data).replace(/[\/\(\)\']/g, "\\$&") + '"'.replace(/"/g, "'");
         sequelize.query('CALL Brand_Delete(' + queryData + ')').then(response => {
-            var response = response[0].message;
+            var response = JSON.parse(response[0].message);
             return callBack(null, response);
         }).catch(error => {
             callBack({"name": error.name, "message": error.original.sqlMessage });

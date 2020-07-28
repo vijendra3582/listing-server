@@ -17,7 +17,7 @@ module.exports = {
                     });
                 } else {
                     req.decoded = decoded;
-                    req.user = req.decoded.result;
+                    req.user = { "id": req.decoded.result.id };
                     next();
                 }
             });

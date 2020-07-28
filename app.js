@@ -1,6 +1,7 @@
 //Import Libraries
 require("dotenv").config();
 const express = require('express');
+var cors = require('cors')
 const path = require('path');
 const bodyParser = require('body-parser');
 
@@ -19,11 +20,16 @@ const bundleRoutes = require('./routes/bundle.route');
 const vendorRoutes = require('./routes/vendor.route');
 const userRoutes = require('./routes/user.route');
 const couponRoutes = require('./routes/coupon.route');
+const homeRoutes = require('./routes/home.route');
+const cartRoutes = require('./routes/cart.route');
 
 //Get port
 const portNode = process.env.PORT || 8080;
 
 const app = express();
+
+//Cors
+app.use(cors())
 
 //Parse Form Packet of data
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -46,17 +52,19 @@ app.use('/api/bundle', bundleRoutes);
 app.use('/api/vendor', vendorRoutes);
 app.use('/api/user', userRoutes);
 app.use('/api/coupon', couponRoutes);
+app.use('/api/home', homeRoutes);
+app.use('/api/cart', cartRoutes);
 
 const { getTransporter } = require('./config/mailer');
-app.get('/mail', function(req, res) {
+app.get('/mail', function (req, res) {
     let result = getTransporter().sendMail({
-            from: process.env.MAIL_FROM,
-            to: 'vijendra3582@gmail.com',
-            subject: 'New Mail',
-            text: `New Mail`,
-        }).then(([res]) => {
-            console.log('Message delivered with code %s %s', res.statusCode, res.statusMessage);
-        })
+        from: process.env.MAIL_FROM,
+        to: 'vijendra3582@gmail.com',
+        subject: 'New Mail',
+        text: `New Mail`,
+    }).then(([res]) => {
+        console.log('Message delivered with code %s %s', res.statusCode, res.statusMessage);
+    })
         .catch(err => {
             console.log('Errors occurred, failed to deliver message');
 

@@ -3,16 +3,16 @@ const sequelize = require("./../config/database");
 module.exports = {
     create: (data, callBack) => {
         var queryData = '"'.replace(/"/g, "'") + JSON.stringify(data).replace(/[\/\(\)\']/g, "\\$&") + '"'.replace(/"/g, "'");
-        if (data.role == 'customer') {
+        if (data.role == 'user') {
             sequelize.query('CALL User_Registration(' + queryData + ')').then(response => {
-                var response = response[0].message;
+                var response = JSON.parse(response[0].message);
                 return callBack(null, response);
             }).catch(error => {
                 callBack({ "name": error.name, "message": error.original.sqlMessage });
             });
         } else if (data.role == 'vendor') {
             sequelize.query('CALL Vendor_Registration(' + queryData + ')').then(response => {
-                var response = response[0].message;
+                var response = JSON.parse(response[0].message);
                 return callBack(null, response);
             }).catch(error => {
                 callBack({ "name": error.name, "message": error.original.sqlMessage });
@@ -34,7 +34,7 @@ module.exports = {
         var data = { "field": "email", "value": data.email};
         var queryData = '"'.replace(/"/g, "'") + JSON.stringify(data).replace(/[\/\(\)\']/g, "\\$&") + '"'.replace(/"/g, "'");
         sequelize.query('CALL Vendor_Single(' + queryData + ')').then(response => {
-            var response = response[0].message;
+            var response = JSON.parse(response[0].message);
             return callBack(null, response);
         }).catch(error => {
             callBack({ "name": error.name, "message": error.original.sqlMessage });
@@ -74,7 +74,7 @@ module.exports = {
     updateUser: (data, callBack) => {
         var queryData = '"'.replace(/"/g, "'") + JSON.stringify(data).replace(/[\/\(\)\']/g, "\\$&") + '"'.replace(/"/g, "'");
         sequelize.query('CALL User_Update(' + queryData + ')').then(response => {
-            var response = response[0].message;
+            var response = JSON.parse(response[0].message);
             return callBack(null, response);
         }).catch(error => {
             callBack({ "name": error.name, "message": error.original.sqlMessage });
@@ -85,7 +85,7 @@ module.exports = {
         var dataP = { "field": "id", "value": id };
         var queryData = '"'.replace(/"/g, "'") + JSON.stringify(dataP).replace(/[\/\(\)\']/g, "\\$&") + '"'.replace(/"/g, "'");
         sequelize.query('CALL User_Delete(' + queryData + ')').then(response => {
-            var response = response[0].message;
+            var response = JSON.parse(response[0].message);
             return callBack(null, response);
         }).catch(error => {
             callBack({ "name": error.name, "message": error.original.sqlMessage });

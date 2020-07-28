@@ -9,8 +9,8 @@ router.post('/vendor/register', authController.registerVendor);
 router.post('/vendor/login', authController.loginVendor);
 router.get('/vendor/me', checkToken, authController.meVendor);
 
-router.post('/customer/register', authController.registerCustomer);
-router.post('/customer/login', authController.loginCustomer);
-router.get('/customer/me', checkToken, authController.meCustomer);
+router.post('/user/register', authController.registerUser);
+router.post('/user/login', authController.loginUser);
+router.get('/user/me', checkToken, authController.meUser);
 
 module.exports = router;

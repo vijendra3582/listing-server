@@ -9,9 +9,10 @@ const {
 } = require('./../models/auth.model');
 const { getTransporter } = require('./../config/mailer');
 
-exports.registerCustomer = (req, res, next) => {
+exports.registerUser = (req, res, next) => {
 
     let body = req.body;
+    
     const v = new Validator(body, {
         name: 'required|string|minLength:2',
         email: 'required|email',
@@ -34,7 +35,7 @@ exports.registerCustomer = (req, res, next) => {
         body.plain_password = body.password;
         const salt = genSaltSync(10);
         body.password = hashSync(body.password, salt);
-        body.role = 'customer';
+        body.role = 'user';
         create(body, (err, result) => {
             if (err) {
                 return res.status(500).json({
@@ -135,7 +136,7 @@ exports.registerVendor = (req, res, next) => {
     });
 };
 
-exports.loginCustomer = (req, res, next) => {
+exports.loginUser = (req, res, next) => {
     let body = req.body;
     const v = new Validator(body, {
         email: 'required|email',
@@ -282,7 +283,7 @@ exports.loginAdmin = (req, res, next) => {
     });
 };
 
-exports.meCustomer = (req, res, next) => {
+exports.meUser = (req, res, next) => {
     return res.status(200).json({
         status: true,
         user: req.user

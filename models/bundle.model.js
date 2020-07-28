@@ -4,7 +4,7 @@ module.exports = {
     create: (data, callBack) => {
         var queryData = '"'.replace(/"/g, "'") + JSON.stringify(data).replace(/[\/\(\)\']/g, "\\$&") + '"'.replace(/"/g, "'");
         sequelize.query('CALL Bundle_Insert(' + queryData + ')').then(response => {
-            var response = response[0].message;
+            var response = JSON.parse(response[0].message);
             return callBack(null, response);
         }).catch(error => {
             callBack({ "name": error.name, "message": error.original.sqlMessage });
@@ -14,7 +14,7 @@ module.exports = {
     update: (data, callBack) => {
         var queryData = '"'.replace(/"/g, "'") + JSON.stringify(data).replace(/[\/\(\)\']/g, "\\$&") + '"'.replace(/"/g, "'");
         sequelize.query('CALL Bundle_Update(' + queryData + ')').then(response => {
-            var response = response[0].message;
+            var response = JSON.parse(response[0].message);
             return callBack(null, response);
         }).catch(error => {
             callBack({ "name": error.name, "message": error.original.sqlMessage });
@@ -24,7 +24,7 @@ module.exports = {
     deleteA: (data, callBack) => {
         var queryData = '"'.replace(/"/g, "'") + JSON.stringify(data).replace(/[\/\(\)\']/g, "\\$&") + '"'.replace(/"/g, "'");
         sequelize.query('CALL Bundle_Delete(' + queryData + ')').then(response => {
-            var response = response[0].message;
+            var response = JSON.parse(response[0].message);
             return callBack(null, response);
         }).catch(error => {
             callBack({ "name": error.name, "message": error.original.sqlMessage });
@@ -61,7 +61,7 @@ module.exports = {
     featured: (data, callBack) => {
         var queryData = '"'.replace(/"/g, "'") + JSON.stringify(data).replace(/[\/\(\)\']/g, "\\$&") + '"'.replace(/"/g, "'");
         sequelize.query('CALL Bundle_Update_Featured(' + queryData + ')').then(response => {
-            var response = response[0].message;
+            var response = JSON.parse(response[0].message);
             return callBack(null, response);
         }).catch(error => {
             callBack({ "name": error.name, "message": error.original.sqlMessage });
@@ -71,7 +71,7 @@ module.exports = {
     changeStatus: (data, callBack) => {
         var queryData = '"'.replace(/"/g, "'") + JSON.stringify(data).replace(/[\/\(\)\']/g, "\\$&") + '"'.replace(/"/g, "'");
         sequelize.query('CALL Bundle_Update_Status(' + queryData + ')').then(response => {
-            var response = response[0].message;
+            var response = JSON.parse(response[0].message);
             return callBack(null, response);
         }).catch(error => {
             callBack({ "name": error.name, "message": error.original.sqlMessage });
@@ -81,7 +81,7 @@ module.exports = {
     stock: (data, callBack) => {
         var queryData = '"'.replace(/"/g, "'") + JSON.stringify(data).replace(/[\/\(\)\']/g, "\\$&") + '"'.replace(/"/g, "'");
         sequelize.query('CALL Bundle_Update_Stock(' + queryData + ')').then(response => {
-            var response = response[0].message;
+            var response = JSON.parse(response[0].message);
             return callBack(null, response);
         }).catch(error => {
             callBack({ "name": error.name, "message": error.original.sqlMessage });
@@ -91,7 +91,7 @@ module.exports = {
     discount: (data, callBack) => {
         var queryData = '"'.replace(/"/g, "'") + JSON.stringify(data).replace(/[\/\(\)\']/g, "\\$&") + '"'.replace(/"/g, "'");
         sequelize.query('CALL Bundle_Update_Discount(' + queryData + ')').then(response => {
-            var response = response[0].message;
+            var response = JSON.parse(response[0].message);
             return callBack(null, response);
         }).catch(error => {
             callBack({ "name": error.name, "message": error.original.sqlMessage });
@@ -101,7 +101,7 @@ module.exports = {
     tax: (data, callBack) => {
         var queryData = '"'.replace(/"/g, "'") + JSON.stringify(data).replace(/[\/\(\)\']/g, "\\$&") + '"'.replace(/"/g, "'");
         sequelize.query('CALL Bundle_Update_Tax(' + queryData + ')').then(response => {
-            var response = response[0].message;
+            var response = JSON.parse(response[0].message);
             return callBack(null, response);
         }).catch(error => {
             callBack({ "name": error.name, "message": error.original.sqlMessage });

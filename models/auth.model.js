@@ -54,7 +54,7 @@ module.exports = {
     getUserByUserId: (id, callBack) => {
         var dataP = { "field": "id", "value": id };
         var queryData = '"'.replace(/"/g, "'") + JSON.stringify(dataP).replace(/[\/\(\)\']/g, "\\$&") + '"'.replace(/"/g, "'");
-        sequelize.query('CALL Get_User_Single(' + queryData + ')').then(response => {
+        sequelize.query('CALL User_Single(' + queryData + ')').then(response => {
             return callBack(null, response[0]);
         }).catch(error => {
             callBack({ "name": error.name, "message": error.original.sqlMessage });
@@ -73,8 +73,8 @@ module.exports = {
 
     updateUser: (data, callBack) => {
         var queryData = '"'.replace(/"/g, "'") + JSON.stringify(data).replace(/[\/\(\)\']/g, "\\$&") + '"'.replace(/"/g, "'");
-        sequelize.query('CALL User_Update(' + queryData + ')').then(response => {
-            var response = JSON.parse(response[0].message);
+        sequelize.query('CALL Home_User_Update(' + queryData + ')').then(response => {
+            var response = response;
             return callBack(null, response);
         }).catch(error => {
             callBack({ "name": error.name, "message": error.original.sqlMessage });

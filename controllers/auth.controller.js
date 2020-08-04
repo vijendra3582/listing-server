@@ -4,7 +4,9 @@ const { Validator } = require('node-input-validator');
 const {
     create,
     getByEmail,
+    getUserByUserId,
     getByEmailVendor,
+    updateUser,
     getByEmailAdmin
 } = require('./../models/auth.model');
 const { getTransporter } = require('./../config/mailer');
@@ -12,7 +14,7 @@ const { getTransporter } = require('./../config/mailer');
 exports.registerUser = (req, res, next) => {
 
     let body = req.body;
-    
+
     const v = new Validator(body, {
         name: 'required|string|minLength:2',
         email: 'required|email',
@@ -44,16 +46,16 @@ exports.registerUser = (req, res, next) => {
                 });
             }
             getTransporter().sendMail({
-                    from: process.env.MAIL_FROM,
-                    to: body.email,
-                    subject: 'Thank you for registration !',
-                    text: 'You username is : ' + body.email + ' and your password is : ' + body.plain_password + '.',
-                }).then(([resMail]) => {
-                    return res.status(200).json({
-                        status: result.status,
-                        message: result.message
-                    });
-                })
+                from: process.env.MAIL_FROM,
+                to: body.email,
+                subject: 'Thank you for registration !',
+                text: 'You username is : ' + body.email + ' and your password is : ' + body.plain_password + '.',
+            }).then(([resMail]) => {
+                return res.status(200).json({
+                    status: result.status,
+                    message: result.message
+                });
+            })
                 .catch(err => {
                     console.log('Errors occurred, failed to deliver message');
                     if (err.response && err.response.body && err.response.body.errors) {
@@ -114,16 +116,16 @@ exports.registerVendor = (req, res, next) => {
                 });
             }
             getTransporter().sendMail({
-                    from: process.env.MAIL_FROM,
-                    to: body.email,
-                    subject: 'Thank you for registration !',
-                    text: 'You username is : ' + body.email + ' and your password is : ' + body.plain_password + '.',
-                }).then(([resMail]) => {
-                    return res.status(200).json({
-                        status: result.status,
-                        message: result.message
-                    });
-                })
+                from: process.env.MAIL_FROM,
+                to: body.email,
+                subject: 'Thank you for registration !',
+                text: 'You username is : ' + body.email + ' and your password is : ' + body.plain_password + '.',
+            }).then(([resMail]) => {
+                return res.status(200).json({
+                    status: result.status,
+                    message: result.message
+                });
+            })
                 .catch(err => {
                     console.log('Errors occurred, failed to deliver message');
                     if (err.response && err.response.body && err.response.body.errors) {
@@ -239,7 +241,7 @@ exports.loginAdmin = (req, res, next) => {
         email: 'required|email',
         password: 'required'
     });
-    
+
     v.check().then((matched) => {
         if (!matched) {
             return res.status(422).json({
@@ -249,7 +251,7 @@ exports.loginAdmin = (req, res, next) => {
         }
 
         getByEmailAdmin(body, (err, results) => {
-            
+
             if (err) {
                 console.log(err);
             }
@@ -283,16 +285,66 @@ exports.loginAdmin = (req, res, next) => {
     });
 };
 
-exports.meUser = (req, res, next) => {
+exports.meVendor = (req, res, next) => {
     return res.status(200).json({
         status: true,
         user: req.user
     });
 };
 
-exports.meVendor = (req, res, next) => {
-    return res.status(200).json({
-        status: true,
-        user: req.user
+exports.meUser = (req, res, next) => {
+    getUserByUserId(req.user.id, (err, results) => {
+        if (err) {
+            console.log(err);
+        }
+        if (!results) {
+            return res.status(500).json({
+                status: false,
+                message: "Invalid email or password."
+            });
+        }
+        results.password = undefined;
+        results.from_admin = undefined;
+        return res.status(200).json({
+            status: true,
+            user: results
+        });
+    });
+};
+
+exports.updateUser = (req, res, next) => {
+    let body = req.body;
+    body.currentSession = req.user;
+    const v = new Validator(body, {
+        name: 'required|string|minLength:2',
+        email: 'required|email',
+        mobile: 'required|phoneNumber',
+        address: 'required',
+        state: 'required',
+        city: 'required',
+        profession: 'required'
+    });
+
+    v.check().then((matched) => {
+        if (!matched) {
+            return res.status(422).json({
+                status: false,
+                message: { "errors": v.errors }
+            });
+        }
+
+        updateUser(body, (err, result) => {
+            if (err) {
+                return res.status(500).json({
+                    status: false,
+                    message: err
+                });
+            }
+
+            return res.status(200).json({
+                status: true,
+                user: result
+            });
+        });
     });
 };

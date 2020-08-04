@@ -12,5 +12,6 @@ router.get('/vendor/me', checkToken, authController.meVendor);
 router.post('/user/register', authController.registerUser);
 router.post('/user/login', authController.loginUser);
 router.get('/user/me', checkToken, authController.meUser);
+router.post('/user/update', checkToken, authController.updateUser);
 
 module.exports = router;

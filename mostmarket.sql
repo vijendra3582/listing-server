@@ -1261,6 +1261,50 @@ BEGIN
 	SELECT `name` as title, `logo` as image, `unique_no` as slug FROM `prefix_vendors` LIMIT 10;
 END;;
 
+DROP PROCEDURE IF EXISTS `Home_User_Update`;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `Home_User_Update`(IN `p_body` json)
+BEGIN
+DECLARE v_id int;
+DECLARE v_name varchar(255);
+DECLARE v_email varchar(255);
+DECLARE v_mobile varchar(255);
+DECLARE v_profession varchar(255);
+DECLARE v_address text;
+DECLARE v_country int;
+DECLARE v_state int;
+DECLARE v_city int;
+DECLARE v_status varchar(255);
+START TRANSACTION;
+    SET v_id 				= JSON_UNQUOTE(JSON_EXTRACT(p_body,'$.id'));
+	SET v_name 				= JSON_UNQUOTE(JSON_EXTRACT(p_body,'$.name'));
+	SET v_email 			= JSON_UNQUOTE(JSON_EXTRACT(p_body,'$.email'));
+	SET v_mobile 			= JSON_UNQUOTE(JSON_EXTRACT(p_body,'$.mobile'));
+	SET v_profession 		= JSON_UNQUOTE(JSON_EXTRACT(p_body,'$.profession'));
+	SET v_address 			= JSON_UNQUOTE(JSON_EXTRACT(p_body,'$.address'));
+	SET v_country 			= JSON_UNQUOTE(JSON_EXTRACT(p_body,'$.country'));
+	SET v_state 			= JSON_UNQUOTE(JSON_EXTRACT(p_body,'$.state'));
+	SET v_city 			    = JSON_UNQUOTE(JSON_EXTRACT(p_body,'$.city'));
+    SET v_status			= JSON_UNQUOTE(JSON_EXTRACT(p_body,'$.status'));
+	IF EXISTS (SELECT 1 FROM `prefix_users` WHERE (`email` = v_email OR `mobile` = v_mobile) AND `id` != v_id) THEN
+		SELECT JSON_OBJECT('status',false,'message','This email or mobile already exists in database.') as message;    
+	ELSE
+		UPDATE prefix_users SET
+			 `name` = v_name, 
+			 `email` = v_email, 
+			 `mobile` = v_mobile, 
+			 `profession` = v_profession, 
+			 `address` = v_address, 
+			 `country` = v_country, 
+			 `state` = v_state, 
+			 `city` = v_city, 
+			 `status` = v_status
+			 WHERE id = v_id;
+			 
+		SELECT `id`, `name`, `mobile`, `profession`, `address`, `country`, `state`, `city`  FROM `prefix_users` WHERE `id` = v_id;
+    END IF;
+COMMIT;
+END;;
+
 DROP PROCEDURE IF EXISTS `Home_Vendor_Products`;;
 CREATE PROCEDURE `Home_Vendor_Products`(IN `p_body` JSON)
 BEGIN
@@ -55685,7 +55729,7 @@ INSERT INTO `prefix_users` (`id`, `unique_no`, `name`, `email`, `mobile`, `passw
 (56,	'DL56',	'AFTAB RAJA',	'ftbraja90@gmail.com',	'8954365699',	'$2a$10$YvJ03IPvbzAT/zraLZEbg.lppgbHvYLG5xwTvcAyeN6SrtEiSFlO.',	'Software Developer',	'B-Hive11, B-2 11, Block B, Mohan Co- operative Industrial Estate, Metro Pillar 175 ,Behind Badarpur Metro Station',	101,	10,	707,	'pending',	'no',	'2020-06-22 04:18:19',	'2020-06-22 04:18:19'),
 (57,	'DL57',	'Prateek',	'prateek@makemaya.com',	'7532943950',	'$2a$10$9HOkhpxUbU45kx1enbAIIutZZQ69lNpf.cV4wxXxLbgl9O/q7TOBW',	'SE',	'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.',	101,	2,	6,	'active',	'yes',	'2020-07-10 10:28:56',	'2020-07-10 10:28:56'),
 (58,	'DL58',	'Aftab Khan',	'er.aftabrd@gmail.com',	'7744551144',	'$2a$10$JO95WB57ZDPgnNI5AT50qOPXKi.rDHwDDQfwKzJ4s7CD8rJjjLIeC',	'SE - Software Engineer',	'Faridabad',	101,	38,	4952,	'pending',	'no',	'2020-07-27 07:45:51',	'2020-07-27 07:45:51'),
-(59,	'DL59',	'Aftab Khan',	'er.aftabrdd@gmail.com',	'7744551143',	'$2a$10$bcuNIEi4XL.Y/vxK90lQ.OVLW9gmmcTbuDr/o0X0munjfwDaSEzZi',	'SE - Software Engineer',	'Faridabad',	101,	38,	4952,	'pending',	'no',	'2020-07-27 07:46:46',	'2020-07-27 07:46:46');
+(59,	'DL59',	'Aftab Khan',	'er.aftabrdd@gmail.com',	'7744551147',	'$2a$10$bcuNIEi4XL.Y/vxK90lQ.OVLW9gmmcTbuDr/o0X0munjfwDaSEzZi',	'SE - Software Engineer',	'Faridabad',	101,	38,	4952,	'pending',	'no',	'2020-07-27 07:46:46',	'2020-07-31 11:49:10');
 
 DROP TABLE IF EXISTS `prefix_vendors`;
 CREATE TABLE `prefix_vendors` (
@@ -55733,4 +55777,4 @@ INSERT INTO `prefix_vendors` (`id`, `unique_no`, `logo`, `name`, `email`, `mobil
 (9,	'great-fruit-9',	'[\"listing-itd6fkkd5qi2rf-cuisine3.jpg\"]',	'Great Fruit',	'fruit@gmail.com',	'8246215060',	'$2a$10$OdQVelm8/llOb7OijdsokeETyPCeQm1qFB2.c7xYsKwTIDPX86oGS',	'101, Sector 19, Faridabad',	'121002',	1119,	13,	NULL,	'0',	'',	'',	'',	'proprietor',	'',	'',	'',	'0',	'0',	'[]',	'[]',	'0',	'',	'',	'active',	'yes',	'2020-07-28 09:25:43',	'2020-07-28 09:25:43'),
 (10,	'bbq-10',	'[\"listing-itd47kkd5t179u-cuisine1.jpg\"]',	'BBQ',	'vijendra2@gmail.com',	'8574857412',	'$2a$10$4qghMf/00C8oMmBjlzDFruTonUZpQsk4NwRBRO0rHBq.2gO.Q5ifu',	'101, Sector 19, Faridabad',	'121002',	1119,	13,	NULL,	'0',	'',	'',	'',	'proprietor',	'',	'',	'',	'0',	'0',	'[]',	'[]',	'0',	'',	'',	'active',	'yes',	'2020-07-28 10:37:15',	'2020-07-28 10:37:15');
 
--- 2020-07-28 12:45:02
+-- 2020-08-04 07:22:10

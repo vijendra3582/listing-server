@@ -22,6 +22,7 @@ const userRoutes = require('./routes/user.route');
 const couponRoutes = require('./routes/coupon.route');
 const homeRoutes = require('./routes/home.route');
 const cartRoutes = require('./routes/cart.route');
+const addressRoutes = require('./routes/address.route');
 
 //Get port
 const portNode = process.env.PORT || 8080;
@@ -54,6 +55,7 @@ app.use('/api/user', userRoutes);
 app.use('/api/coupon', couponRoutes);
 app.use('/api/home', homeRoutes);
 app.use('/api/cart', cartRoutes);
+app.use('/api/user/address', addressRoutes);
 
 const { getTransporter } = require('./config/mailer');
 app.get('/mail', function (req, res) {

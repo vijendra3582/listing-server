@@ -465,6 +465,13 @@ BEGIN
         product.id,
         product.name,
         product.sale_price,
+        (CASE
+          WHEN(product.discount_type = "flat") 
+		  THEN 
+			(product.sale_price - product.discount)
+		  ELSE 
+			(product.sale_price-(product.sale_price*(product.discount/100)))
+		  END) AS discount_price,
         product.logo
 	FROM 
 		prefix_carts cart 
@@ -502,6 +509,13 @@ BEGIN
         product.id,
         product.name,
         product.sale_price,
+        (CASE
+          WHEN(product.discount_type = "flat") 
+		  THEN 
+			(product.sale_price - product.discount)
+		  ELSE 
+			(product.sale_price-(product.sale_price*(product.discount/100)))
+		  END) AS discount_price,
         product.logo 
 	FROM 
 		prefix_carts cart 
@@ -541,6 +555,13 @@ BEGIN
         product.id,
         product.name,
         product.sale_price,
+        (CASE
+          WHEN(product.discount_type = "flat") 
+		  THEN 
+			(product.sale_price - product.discount)
+		  ELSE 
+			(product.sale_price-(product.sale_price*(product.discount/100)))
+		  END) AS discount_price,
         product.logo 
 	FROM 
 		prefix_carts cart 
@@ -595,6 +616,13 @@ BEGIN
         product.id,
         product.name,
         product.sale_price,
+        (CASE
+          WHEN(product.discount_type = "flat") 
+		  THEN 
+			(product.sale_price - product.discount)
+		  ELSE 
+			(product.sale_price-(product.sale_price*(product.discount/100)))
+		  END) AS discount_price,
         product.logo 
 	FROM 
 		prefix_carts cart 
@@ -1539,6 +1567,13 @@ BEGIN
 		vendor.unique_no as vendor,
 		category.name as category_name,
 		sub_category.name as sub_category_name,
+        (CASE
+          WHEN(product.discount_type = "flat") 
+		  THEN 
+			(product.sale_price - product.discount)
+		  ELSE 
+			(product.sale_price-(product.sale_price*(product.discount/100)))
+		  END) AS discount_price,
 		brand.name as brand_name
 	  FROM 
 		prefix_products product 
@@ -3607,7 +3642,8 @@ CREATE TABLE `prefix_carts` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 INSERT INTO `prefix_carts` (`id`, `user_id`, `product_id`, `quantity`, `created_at`, `updated_at`) VALUES
-(10,	59,	522,	2,	'2020-07-27 11:39:20',	'2020-07-27 11:39:25');
+(16,	59,	522,	1,	'2020-08-05 09:48:33',	'2020-08-05 09:48:33'),
+(17,	59,	523,	1,	'2020-08-05 09:48:35',	'2020-08-05 09:48:35');
 
 DROP TABLE IF EXISTS `prefix_categories`;
 CREATE TABLE `prefix_categories` (
@@ -51858,6 +51894,35 @@ CREATE TABLE `prefix_coupons` (
 INSERT INTO `prefix_coupons` (`id`, `title`, `valid_from`, `valid_to`, `discount_on_type`, `discount_on_id`, `coupon_code`, `discount_type`, `discount_value`, `status`, `created_by`, `created_at`, `updated_at`) VALUES
 (1,	'25 % Extra',	'2020-04-08T12:52:57.786Z',	'2020-04-30T12:53:03.514Z',	'category',	'[\"14\", \"15\"]',	'JAN2543',	'flat',	15,	'active',	0,	NULL,	NULL);
 
+DROP TABLE IF EXISTS `prefix_orders`;
+CREATE TABLE `prefix_orders` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `user_id` int(11) NOT NULL,
+  `total_products` int(11) NOT NULL,
+  `total_amount` int(11) NOT NULL,
+  `total_discount` int(11) NOT NULL,
+  `total_discount_amount` int(11) NOT NULL,
+  `coupon_id` int(11) DEFAULT NULL,
+  `payment_mode` enum('online','offline','') NOT NULL,
+  `payment_platform` varchar(255) NOT NULL,
+  `status` enum('placed','confirmed','dispatched','delivered') NOT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+
+DROP TABLE IF EXISTS `prefix_order_items`;
+CREATE TABLE `prefix_order_items` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `order_id` int(11) NOT NULL,
+  `product_id` int(11) NOT NULL,
+  `product_price` int(11) NOT NULL,
+  `product_quantity` int(11) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+
 DROP TABLE IF EXISTS `prefix_products`;
 CREATE TABLE `prefix_products` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -56108,6 +56173,7 @@ CREATE TABLE `prefix_wishlists` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 INSERT INTO `prefix_wishlists` (`id`, `user_id`, `vendor_id`, `created_at`, `updated_at`) VALUES
-(4,	59,	8,	'2020-08-04 13:10:33',	'2020-08-04 13:10:33');
+(4,	59,	8,	'2020-08-04 13:10:33',	'2020-08-04 13:10:33'),
+(5,	59,	7,	'2020-08-05 09:54:48',	'2020-08-05 09:54:48');
 
--- 2020-08-04 13:41:31
+-- 2020-08-05 10:12:29

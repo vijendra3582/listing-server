@@ -8,7 +8,7 @@ SET sql_mode = 'NO_AUTO_VALUE_ON_ZERO';
 DELIMITER ;;
 
 DROP PROCEDURE IF EXISTS `Address_All`;;
-CREATE PROCEDURE `Address_All`(IN `p_body` JSON)
+CREATE DEFINER=`root`@`localhost` PROCEDURE `Address_All`(IN `p_body` JSON)
 BEGIN
 	DECLARE v_session_user json;
 	SET v_session_user 	    = JSON_UNQUOTE(JSON_EXTRACT(p_body,'$.currentSession'));
@@ -50,7 +50,7 @@ BEGIN
 END;;
 
 DROP PROCEDURE IF EXISTS `Address_Count`;;
-CREATE PROCEDURE `Address_Count`(IN `p_body` JSON)
+CREATE DEFINER=`root`@`localhost` PROCEDURE `Address_Count`(IN `p_body` JSON)
 BEGIN
    DECLARE v_session_user json;
 	SET v_session_user 	    = JSON_UNQUOTE(JSON_EXTRACT(p_body,'$.currentSession'));
@@ -64,7 +64,7 @@ BEGIN
 END;;
 
 DROP PROCEDURE IF EXISTS `Address_Delete`;;
-CREATE PROCEDURE `Address_Delete`(IN `p_body` json)
+CREATE DEFINER=`root`@`localhost` PROCEDURE `Address_Delete`(IN `p_body` json)
 BEGIN
     DECLARE v_id INT;
     DECLARE v_session_user json;
@@ -82,7 +82,7 @@ BEGIN
 END;;
 
 DROP PROCEDURE IF EXISTS `Address_Insert`;;
-CREATE PROCEDURE `Address_Insert`(IN `p_body` JSON)
+CREATE DEFINER=`root`@`localhost` PROCEDURE `Address_Insert`(IN `p_body` JSON)
 BEGIN
 DECLARE v_name varchar(255);
 DECLARE v_mobile varchar(255);
@@ -149,7 +149,7 @@ COMMIT;
 END;;
 
 DROP PROCEDURE IF EXISTS `Address_Single`;;
-CREATE PROCEDURE `Address_Single`(IN `p_body` JSON)
+CREATE DEFINER=`root`@`localhost` PROCEDURE `Address_Single`(IN `p_body` JSON)
 BEGIN
 DECLARE v_field varchar(255);
 DECLARE v_value varchar(255);
@@ -169,7 +169,7 @@ END IF;
 END;;
 
 DROP PROCEDURE IF EXISTS `Address_Update`;;
-CREATE PROCEDURE `Address_Update`(IN `p_body` JSON)
+CREATE DEFINER=`root`@`localhost` PROCEDURE `Address_Update`(IN `p_body` JSON)
 BEGIN
 
 DECLARE v_id int;
@@ -471,8 +471,7 @@ BEGIN
 			(product.sale_price - product.discount)
 		  ELSE 
 			(product.sale_price-(product.sale_price*(product.discount/100)))
-		  END) AS discount_price,
-        product.logo
+		  END) AS discount_price
 	FROM 
 		prefix_carts cart 
     INNER JOIN 
@@ -515,8 +514,7 @@ BEGIN
 			(product.sale_price - product.discount)
 		  ELSE 
 			(product.sale_price-(product.sale_price*(product.discount/100)))
-		  END) AS discount_price,
-        product.logo 
+		  END) AS discount_price
 	FROM 
 		prefix_carts cart 
     INNER JOIN 
@@ -561,8 +559,7 @@ BEGIN
 			(product.sale_price - product.discount)
 		  ELSE 
 			(product.sale_price-(product.sale_price*(product.discount/100)))
-		  END) AS discount_price,
-        product.logo 
+		  END) AS discount_price
 	FROM 
 		prefix_carts cart 
     INNER JOIN 
@@ -622,8 +619,7 @@ BEGIN
 			(product.sale_price - product.discount)
 		  ELSE 
 			(product.sale_price-(product.sale_price*(product.discount/100)))
-		  END) AS discount_price,
-        product.logo 
+		  END) AS discount_price
 	FROM 
 		prefix_carts cart 
     INNER JOIN 
@@ -1130,7 +1126,7 @@ BEGIN
     DECLARE v_session_user json;
 
     SET v_field 				= JSON_UNQUOTE(JSON_EXTRACT(p_body,'$.field'));
-    SET v_value 			= JSON_UNQUOTE(JSON_EXTRACT(p_body,'$.value'));
+    SET v_value 				= JSON_UNQUOTE(JSON_EXTRACT(p_body,'$.value'));
     SET v_session_user 	        = JSON_UNQUOTE(JSON_EXTRACT(p_body,'$.currentSession'));
 
     SET @user_id                = JSON_UNQUOTE(JSON_EXTRACT(v_session_user,'$.id'));
@@ -1293,13 +1289,13 @@ BEGIN
 END;;
 
 DROP PROCEDURE IF EXISTS `Home_Cuisine`;;
-CREATE PROCEDURE `Home_Cuisine`(IN `p_body` JSON)
+CREATE DEFINER=`root`@`localhost` PROCEDURE `Home_Cuisine`(IN `p_body` JSON)
 BEGIN
 	SELECT `name`, `slug` FROM `prefix_categories` LIMIT 6;
 END;;
 
 DROP PROCEDURE IF EXISTS `Home_Listing_Brand`;;
-CREATE PROCEDURE `Home_Listing_Brand`(IN `p_body` JSON)
+CREATE DEFINER=`root`@`localhost` PROCEDURE `Home_Listing_Brand`(IN `p_body` JSON)
 BEGIN
   SELECT 
 		`id`, 
@@ -1312,7 +1308,7 @@ BEGIN
 END;;
 
 DROP PROCEDURE IF EXISTS `Home_Listing_Category`;;
-CREATE PROCEDURE `Home_Listing_Category`(IN `p_body` JSON)
+CREATE DEFINER=`root`@`localhost` PROCEDURE `Home_Listing_Category`(IN `p_body` JSON)
 BEGIN
   SELECT 
 		`id`, 
@@ -1325,7 +1321,7 @@ BEGIN
 END;;
 
 DROP PROCEDURE IF EXISTS `Home_Listing_Most_Popular`;;
-CREATE PROCEDURE `Home_Listing_Most_Popular`(IN `p_body` JSON)
+CREATE DEFINER=`root`@`localhost` PROCEDURE `Home_Listing_Most_Popular`(IN `p_body` JSON)
 BEGIN
   SELECT 
 		`logo`, 
@@ -1338,7 +1334,7 @@ BEGIN
 END;;
 
 DROP PROCEDURE IF EXISTS `Home_Listing_Products`;;
-CREATE PROCEDURE `Home_Listing_Products`(IN `p_body` JSON)
+CREATE DEFINER=`root`@`localhost` PROCEDURE `Home_Listing_Products`(IN `p_body` JSON)
 BEGIN
   DECLARE v_query varchar(255);
   DECLARE v_query_slug varchar(255);
@@ -1430,7 +1426,7 @@ BEGIN
 END;;
 
 DROP PROCEDURE IF EXISTS `Home_Listing_Sub_Category`;;
-CREATE PROCEDURE `Home_Listing_Sub_Category`(IN `p_body` JSON)
+CREATE DEFINER=`root`@`localhost` PROCEDURE `Home_Listing_Sub_Category`(IN `p_body` JSON)
 BEGIN
   SELECT 
 		`id`, 
@@ -1444,7 +1440,7 @@ BEGIN
 END;;
 
 DROP PROCEDURE IF EXISTS `Home_Listing_Top`;;
-CREATE PROCEDURE `Home_Listing_Top`(IN `p_body` JSON)
+CREATE DEFINER=`root`@`localhost` PROCEDURE `Home_Listing_Top`(IN `p_body` JSON)
 BEGIN
   SELECT 
 		`logo`, 
@@ -1457,7 +1453,7 @@ BEGIN
 END;;
 
 DROP PROCEDURE IF EXISTS `Home_Most_Populor`;;
-CREATE PROCEDURE `Home_Most_Populor`(IN `p_body` JSON)
+CREATE DEFINER=`root`@`localhost` PROCEDURE `Home_Most_Populor`(IN `p_body` JSON)
 BEGIN
 	SELECT 
 		product.name,
@@ -1490,7 +1486,7 @@ BEGIN
 END;;
 
 DROP PROCEDURE IF EXISTS `Home_Populor`;;
-CREATE PROCEDURE `Home_Populor`(IN `p_body` JSON)
+CREATE DEFINER=`root`@`localhost` PROCEDURE `Home_Populor`(IN `p_body` JSON)
 BEGIN
 	SELECT 
 		`logo`, 
@@ -1503,7 +1499,7 @@ BEGIN
 END;;
 
 DROP PROCEDURE IF EXISTS `Home_Slider`;;
-CREATE PROCEDURE `Home_Slider`(IN `p_body` JSON)
+CREATE DEFINER=`root`@`localhost` PROCEDURE `Home_Slider`(IN `p_body` JSON)
 BEGIN
 	SELECT `name` as title, `logo` as image, `unique_no` as slug FROM `prefix_vendors` LIMIT 10;
 END;;
@@ -1553,7 +1549,7 @@ COMMIT;
 END;;
 
 DROP PROCEDURE IF EXISTS `Home_Vendor_Products`;;
-CREATE PROCEDURE `Home_Vendor_Products`(IN `p_body` JSON)
+CREATE DEFINER=`root`@`localhost` PROCEDURE `Home_Vendor_Products`(IN `p_body` JSON)
 BEGIN
 	DECLARE v_slug varchar(255);
     SET v_slug = JSON_UNQUOTE(JSON_EXTRACT(p_body,'$.vendor_slug'));
@@ -1598,7 +1594,7 @@ BEGIN
 END;;
 
 DROP PROCEDURE IF EXISTS `Home_Vendor_Single`;;
-CREATE PROCEDURE `Home_Vendor_Single`(IN `p_body` JSON)
+CREATE DEFINER=`root`@`localhost` PROCEDURE `Home_Vendor_Single`(IN `p_body` JSON)
 BEGIN
 	DECLARE v_slug varchar(255);
     SET v_slug = JSON_UNQUOTE(JSON_EXTRACT(p_body,'$.slug'));
@@ -1615,7 +1611,7 @@ BEGIN
 END;;
 
 DROP PROCEDURE IF EXISTS `Listing_Most_Populor`;;
-CREATE PROCEDURE `Listing_Most_Populor`(IN `p_body` JSON)
+CREATE DEFINER=`root`@`localhost` PROCEDURE `Listing_Most_Populor`(IN `p_body` JSON)
 BEGIN
 	SELECT 
 		product.name,
@@ -1648,7 +1644,7 @@ BEGIN
 END;;
 
 DROP PROCEDURE IF EXISTS `Listing_Products`;;
-CREATE PROCEDURE `Listing_Products`(IN `p_body` JSON)
+CREATE DEFINER=`root`@`localhost` PROCEDURE `Listing_Products`(IN `p_body` JSON)
 BEGIN
 	SELECT 
 		product.name,
@@ -1681,7 +1677,7 @@ BEGIN
 END;;
 
 DROP PROCEDURE IF EXISTS `Listing_Top`;;
-CREATE PROCEDURE `Listing_Top`(IN `p_body` JSON)
+CREATE DEFINER=`root`@`localhost` PROCEDURE `Listing_Top`(IN `p_body` JSON)
 BEGIN
 	SELECT 
 		product.name,
@@ -2786,6 +2782,26 @@ BEGIN
 	DEALLOCATE PREPARE stmt;
 END;;
 
+DROP PROCEDURE IF EXISTS `User_Coupon_Check`;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `User_Coupon_Check`(IN `p_body` json)
+BEGIN
+	DECLARE v_coupon_code varchar(255);
+    DECLARE v_vendor_id int;
+
+    SET v_coupon_code		= JSON_UNQUOTE(JSON_EXTRACT(p_body,'$.code'));
+    SET v_vendor_id			= JSON_UNQUOTE(JSON_EXTRACT(p_body,'$.vendor_id'));
+	
+    SET @whereQuery = CONCAT('coupon_code = "', v_coupon_code, '" ');
+    SET @whereQuery = CONCAT(@whereQuery, 'AND ( created_by = ', v_vendor_id, ' ');
+    SET @whereQuery = CONCAT(@whereQuery, 'OR created_by = 0 )');
+
+    SET @query = CONCAT('SELECT id, discount_type, discount_value FROM prefix_coupons WHERE ', @whereQuery);
+	
+	PREPARE stmt FROM @query;
+	EXECUTE stmt;
+	DEALLOCATE PREPARE stmt;
+END;;
+
 DROP PROCEDURE IF EXISTS `User_Delete`;;
 CREATE DEFINER=`root`@`localhost` PROCEDURE `User_Delete`(IN `p_body` JSON)
 BEGIN
@@ -2862,6 +2878,145 @@ START TRANSACTION;
 		SELECT JSON_OBJECT('status',true,'message','User registered successfully.') as message;
 	END IF;
 COMMIT;
+END;;
+
+DROP PROCEDURE IF EXISTS `User_Orders`;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `User_Orders`(IN `p_body` json)
+BEGIN
+	DECLARE v_session_user json;
+    
+    SET v_session_user 	    	= JSON_UNQUOTE(JSON_EXTRACT(p_body,'$.currentSession'));
+    SET @user_id            	= JSON_UNQUOTE(JSON_EXTRACT(v_session_user,'$.id'));
+    
+    SELECT
+		`item`.`order_id`,
+		`item`.`product_price`,
+		`item`.`product_quantity`,
+		`item`.`product_id`,
+		`item`.`product_price`,
+        `product`.`name` as `product_name`,
+        `order`.`created_at`,
+        `order`.`status`
+	FROM
+		`prefix_orders` `order`
+	INNER JOIN
+		`prefix_order_items` `item`
+	ON 
+		`item`.`order_id` = `order`.`id`
+	LEFT JOIN
+		`prefix_products` `product`
+	ON
+		`product`.`id` = `item`.`product_id`
+	LEFT JOIN
+		`prefix_coupons` `coupon`
+	ON
+		`coupon`.`id` = `order`.`coupon_id`
+	WHERE
+		`order`.`user_id` = @user_id
+	ORDER BY
+		`order`.`id` DESC;
+	
+END;;
+
+DROP PROCEDURE IF EXISTS `User_Order_Place`;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `User_Order_Place`(IN `p_body` json)
+BEGIN
+	DECLARE v_address_id int;
+	DECLARE v_coupon_code varchar(255);
+	DECLARE v_coupon_id int;
+	DECLARE v_payment_mode varchar(255);
+	DECLARE v_payment_platform varchar(255);
+	DECLARE v_products json;
+	DECLARE v_status varchar(255);
+	DECLARE v_total_amount varchar(255);
+	DECLARE v_total_discount varchar(255);
+	DECLARE v_total_discount_amount varchar(255);
+	DECLARE v_total_products varchar(255);
+    DECLARE v_session_user json;
+    
+    DECLARE v_order_id int;
+    DECLARE v_order_items JSON;
+	DECLARE v_order_items_length INT(11);
+    DECLARE v_product_item_index BIGINT UNSIGNED DEFAULT 0;
+	
+    DECLARE v_product_id int;
+    DECLARE v_product_price int;
+    DECLARE v_product_quantity int;
+    
+    SET v_address_id 	    	= JSON_UNQUOTE(JSON_EXTRACT(p_body,'$.address_id'));
+    SET v_coupon_code 	    	= JSON_UNQUOTE(JSON_EXTRACT(p_body,'$.coupon_code'));
+    SET v_coupon_id 	    	= JSON_UNQUOTE(JSON_EXTRACT(p_body,'$.coupon_id'));
+    SET v_payment_mode 	    	= JSON_UNQUOTE(JSON_EXTRACT(p_body,'$.payment_mode'));
+    SET v_payment_platform 	    = JSON_UNQUOTE(JSON_EXTRACT(p_body,'$.payment_platform'));
+    SET v_status 	    		= JSON_UNQUOTE(JSON_EXTRACT(p_body,'$.status'));
+    SET v_total_amount 	    	= JSON_UNQUOTE(JSON_EXTRACT(p_body,'$.total_amount'));
+    SET v_total_discount 	    = JSON_UNQUOTE(JSON_EXTRACT(p_body,'$.total_discount'));
+    SET v_total_discount_amount = JSON_UNQUOTE(JSON_EXTRACT(p_body,'$.total_discount_amount'));
+    SET v_total_products 	    = JSON_UNQUOTE(JSON_EXTRACT(p_body,'$.total_products'));
+    
+    SET v_session_user 	    	= JSON_UNQUOTE(JSON_EXTRACT(p_body,'$.currentSession'));
+    SET v_products 	    		= JSON_UNQUOTE(JSON_EXTRACT(p_body,'$.products'));
+    SET @user_id            	= JSON_UNQUOTE(JSON_EXTRACT(v_session_user,'$.id'));
+    
+	START TRANSACTION; 
+		INSERT INTO `prefix_orders` 
+		(
+			`user_id`,
+			`total_products`,
+			`total_amount`,
+			`total_discount`,
+			`total_discount_amount`,
+			`coupon_id`,
+			`payment_mode`,
+			`payment_platform`,
+			`status`
+		)
+		VALUES
+		(
+			@user_id,
+			v_total_products,
+			v_total_amount,
+			v_total_discount,
+			v_total_discount_amount,
+			v_coupon_id,
+			v_payment_mode,
+			v_payment_platform,
+			v_status
+		);
+		
+		SET v_order_id = (SELECT LAST_INSERT_ID());
+		
+		SET v_order_items 			= v_products;
+		SET v_order_items_length 	= JSON_LENGTH(v_order_items);
+		
+		IF v_order_items_length > 0 THEN
+			SET v_product_item_index = 0;
+			My_Orderloop: WHILE v_product_item_index < v_order_items_length DO
+				SET v_product_id 	    = JSON_UNQUOTE(JSON_EXTRACT(v_order_items,CONCAT('$[',v_product_item_index,'].id')));
+				SET v_product_price 	= JSON_UNQUOTE(JSON_EXTRACT(v_order_items,CONCAT('$[',v_product_item_index,'].discount_price')));
+				SET v_product_quantity 	= JSON_UNQUOTE(JSON_EXTRACT(v_order_items,CONCAT('$[',v_product_item_index,'].quantity')));
+				
+				INSERT INTO `prefix_order_items` 
+				(
+					`order_id`,
+					`product_id`,
+					`product_price`,
+					`product_quantity`
+				)
+				VALUES
+				(
+					v_order_id,
+					v_product_id,
+					v_product_price,
+					v_product_quantity
+				);
+				SET v_product_item_index := v_product_item_index + 1;   
+			END WHILE My_Orderloop;
+		END IF;
+        DELETE FROM `prefix_carts` WHERE `user_id` = @user_id;
+        
+        SELECT JSON_OBJECT('status', true,'message','Order placed successfully.') as message;
+    COMMIT;
 END;;
 
 DROP PROCEDURE IF EXISTS `User_Registration`;;
@@ -3499,7 +3654,7 @@ COMMIT;
 END;;
 
 DROP PROCEDURE IF EXISTS `Wishlist_All`;;
-CREATE PROCEDURE `Wishlist_All`(IN `p_body` JSON)
+CREATE DEFINER=`root`@`localhost` PROCEDURE `Wishlist_All`(IN `p_body` JSON)
 BEGIN
 	DECLARE v_session_user json;
     
@@ -3525,7 +3680,7 @@ BEGIN
 END;;
 
 DROP PROCEDURE IF EXISTS `Wishlist_Delete`;;
-CREATE PROCEDURE `Wishlist_Delete`(IN `p_body` JSON)
+CREATE DEFINER=`root`@`localhost` PROCEDURE `Wishlist_Delete`(IN `p_body` JSON)
 BEGIN
 	DECLARE v_session_user json;
     DECLARE v_vendor_id varchar(255);
@@ -3540,7 +3695,7 @@ BEGIN
 END;;
 
 DROP PROCEDURE IF EXISTS `Wishlist_Insert`;;
-CREATE PROCEDURE `Wishlist_Insert`(IN `p_body` JSON)
+CREATE DEFINER=`root`@`localhost` PROCEDURE `Wishlist_Insert`(IN `p_body` JSON)
 BEGIN
 	DECLARE v_session_user json;
     DECLARE v_vendor_id varchar(255);
@@ -3564,7 +3719,7 @@ BEGIN
 END;;
 
 DROP PROCEDURE IF EXISTS `Wishlist_Single`;;
-CREATE PROCEDURE `Wishlist_Single`(IN `p_body` JSON)
+CREATE DEFINER=`root`@`localhost` PROCEDURE `Wishlist_Single`(IN `p_body` JSON)
 BEGIN
 	DECLARE v_session_user json;
     DECLARE v_vendor_id varchar(255);
@@ -3601,7 +3756,10 @@ CREATE TABLE `prefix_addresses` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 INSERT INTO `prefix_addresses` (`id`, `user_id`, `name`, `mobile`, `pincode`, `locality`, `address`, `country`, `state`, `city`, `landmark`, `alternate_mobile`, `address_type`, `created_at`, `updated_at`) VALUES
-(1,	59,	'Vijendra Maurya',	'7532943952',	'231303',	'Bihasara',	'Lorem Ipsum',	101,	38,	4546,	'Panchayat',	'8249216030',	'home',	'2020-08-04 09:52:37',	'2020-08-04 10:03:00');
+(1,	59,	'Vijendra Maurya',	'7532943952',	'231303',	'Bihasara',	'Lorem Ipsum',	101,	38,	4546,	'Panchayat',	'8249216030',	'home',	'2020-08-04 09:52:37',	'2020-08-04 10:03:00'),
+(2,	55,	'Vijendra',	'7532943952',	'121002',	'Shiv Colony',	'101',	101,	38,	4979,	'Community Center',	'8249216030',	'home',	'2020-08-06 06:11:40',	'2020-08-06 06:11:40'),
+(3,	55,	'Aftab Khan',	'7532943952',	'121002',	'Shiv Colony',	'101',	101,	38,	4974,	'Community Center',	'8249216030',	'home',	'2020-08-06 06:13:22',	'2020-08-06 06:13:22'),
+(4,	55,	'Aftab Raja',	'7762922527',	'121001',	'Greenfields Colony',	'B 89',	101,	13,	1119,	'Police Chauki',	'',	'home',	'2020-08-06 07:16:52',	'2020-08-06 07:16:52');
 
 DROP TABLE IF EXISTS `prefix_admins`;
 CREATE TABLE `prefix_admins` (
@@ -51892,7 +52050,7 @@ CREATE TABLE `prefix_coupons` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 INSERT INTO `prefix_coupons` (`id`, `title`, `valid_from`, `valid_to`, `discount_on_type`, `discount_on_id`, `coupon_code`, `discount_type`, `discount_value`, `status`, `created_by`, `created_at`, `updated_at`) VALUES
-(1,	'25 % Extra',	'2020-04-08T12:52:57.786Z',	'2020-04-30T12:53:03.514Z',	'category',	'[\"14\", \"15\"]',	'JAN2543',	'flat',	15,	'active',	0,	NULL,	NULL);
+(1,	'25 % Extra',	'2020-04-08T12:52:57.786Z',	'2020-04-30T12:53:03.514Z',	'category',	'[\"14\", \"15\"]',	'JAN2543',	'percent',	15,	'active',	0,	'2020-08-07 08:40:20',	'2020-08-07 08:40:20');
 
 DROP TABLE IF EXISTS `prefix_orders`;
 CREATE TABLE `prefix_orders` (
@@ -51911,6 +52069,10 @@ CREATE TABLE `prefix_orders` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+INSERT INTO `prefix_orders` (`id`, `user_id`, `total_products`, `total_amount`, `total_discount`, `total_discount_amount`, `coupon_id`, `payment_mode`, `payment_platform`, `status`, `created_at`, `updated_at`) VALUES
+(2,	55,	2,	5950,	893,	5058,	1,	'offline',	'cash_on_delivery',	'placed',	'2020-08-07 12:03:19',	'2020-08-07 12:03:19'),
+(3,	55,	2,	5950,	893,	5058,	1,	'offline',	'cash_on_delivery',	'placed',	'2020-08-07 12:05:15',	'2020-08-07 12:05:15'),
+(4,	55,	2,	5950,	893,	5058,	1,	'offline',	'cash_on_delivery',	'placed',	'2020-08-07 12:05:57',	'2020-08-07 12:05:57');
 
 DROP TABLE IF EXISTS `prefix_order_items`;
 CREATE TABLE `prefix_order_items` (
@@ -51922,6 +52084,13 @@ CREATE TABLE `prefix_order_items` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+INSERT INTO `prefix_order_items` (`id`, `order_id`, `product_id`, `product_price`, `product_quantity`) VALUES
+(1,	2,	522,	1190,	3),
+(2,	2,	523,	1190,	2),
+(3,	3,	522,	1190,	3),
+(4,	3,	523,	1190,	2),
+(5,	4,	522,	1190,	3),
+(6,	4,	523,	1190,	2);
 
 DROP TABLE IF EXISTS `prefix_products`;
 CREATE TABLE `prefix_products` (
@@ -56174,6 +56343,7 @@ CREATE TABLE `prefix_wishlists` (
 
 INSERT INTO `prefix_wishlists` (`id`, `user_id`, `vendor_id`, `created_at`, `updated_at`) VALUES
 (4,	59,	8,	'2020-08-04 13:10:33',	'2020-08-04 13:10:33'),
-(5,	59,	7,	'2020-08-05 09:54:48',	'2020-08-05 09:54:48');
+(5,	59,	7,	'2020-08-05 09:54:48',	'2020-08-05 09:54:48'),
+(6,	55,	7,	'2020-08-06 06:11:49',	'2020-08-06 06:11:49');
 
--- 2020-08-05 10:12:29
+-- 2020-08-07 13:11:45

@@ -34,8 +34,7 @@ module.exports = {
         var data = { "field": "email", "value": data.email};
         var queryData = '"'.replace(/"/g, "'") + JSON.stringify(data).replace(/[\/\(\)\']/g, "\\$&") + '"'.replace(/"/g, "'");
         sequelize.query('CALL Vendor_Single(' + queryData + ')').then(response => {
-            var response = JSON.parse(response[0].message);
-            return callBack(null, response);
+            return callBack(null, response[0]);
         }).catch(error => {
             callBack({ "name": error.name, "message": error.original.sqlMessage });
         });

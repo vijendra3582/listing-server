@@ -8,10 +8,8 @@ module.exports = {
 
             jwt.verify(token, process.env.JWT_KEY, (err, decoded) => {
                 if (err) {
-                    return res.status(401).json({
-                        status: 0,
-                        message: "Unauthorized access."
-                    });
+                    req.user = { "id": "0", "role": "" };
+                    next();
                 } else {
                     req.decoded = decoded;
                     req.user = { "id": req.decoded.result.id, "role": req.decoded.result.role };
@@ -19,10 +17,8 @@ module.exports = {
                 }
             });
         } else {
-            return res.status(401).json({
-                status: 0,
-                message: "Access Denied! Unauthorized User"
-            });
+            req.user = { "id": "0", "role": "" };
+            next();
         }
     }
 };

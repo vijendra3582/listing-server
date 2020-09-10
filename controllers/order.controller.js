@@ -1,19 +1,11 @@
 const { Validator } = require('node-input-validator');
-const { create, update, deleteA, single, all } = require('./../models/coupon.model');
+const { create, update, deleteA, single, all } = require('../models/order.model');
 
 exports.insert = (req, res, next) => {
     let body = req.body;
     body.currentSession = req.user;
     const v = new Validator(body, {
-        title: 'required|string|minLength:2',
-        valid_from: 'required',
-        valid_to: 'required',
-        discount_on_type: 'required',
-        // discount_on_id: '',
-        coupon_code: 'required|alphaNumeric',
-        discount_type: 'required|in:flat,percent',
-        discount_value: 'required|decimal',
-        status: 'required'
+        
     });
     v.check().then((matched) => {
         if (!matched) {
@@ -41,15 +33,9 @@ exports.update = (req, res, next) => {
     let body = req.body;
     body.currentSession = req.user;
     const v = new Validator(body, {
-        title: 'required|string|minLength:2',
-        valid_from: 'required',
-        valid_to: 'required',
-        discount_on_type: 'required',
-        discount_on_id: 'requiredNotIf:discount_on_type,"all_project"',
-        coupon_code: 'required|alphaNumeric',
-        discount_type: 'required|in:flat,percent',
-        discount_value: 'required|decimal',
-        status: 'required'
+        // name: 'required|string|minLength:2|maxLength:255',
+        // slug: 'required|alphaDash',
+        // status: 'required',
     });
     v.check().then((matched) => {
         if (!matched) {
